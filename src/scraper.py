@@ -68,15 +68,16 @@ class Scraper:
         code = 0
         soup = None
 
-        while code != 200 or tries < self.cfg.MAX_TRIES:
+        while code != 200 and tries < self.cfg.MAX_TRIES:
             try:
                 request, code = self.make_request()
-                tries += 1
             except:
                 self.log_progress()
                 self.log_fail(tries, self.cfg.MAX_TRIES)
 
                 time.sleep(self.cfg.TRY_DELAY)
+
+            tries += 1
 
         if code == 200:
             soup = bs(request.content, "html.parser")
