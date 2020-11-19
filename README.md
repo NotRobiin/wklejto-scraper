@@ -1,5 +1,5 @@
 # wklejto.pl scraper
-There is nothing here, there won't be anything here
+Web scraper that scrapes [wklejto.pl](wklejto.pl/), paste site
 
 ## Running the program
 - cd into /src/ directory
