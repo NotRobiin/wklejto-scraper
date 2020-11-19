@@ -1,5 +1,5 @@
 # wklejto.pl scraper
-Web scraper that scrapes [wklejto.pl](wklejto.pl/), paste site
+Web scraper that scrapes [wklejto.pl](https://wklejto.pl/), paste site
 
 ## Running the program
 - cd into /src/ directory
