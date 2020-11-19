@@ -2,19 +2,18 @@ import requests
 import time
 import datetime as dt
 from bs4 import BeautifulSoup as bs
-import helper_functions as helper
 from document import Document
 from website import Website
 from typing import Union
+from helper import Helper
 
 
 class Scraper:
     def __init__(self, config, database):
         self.cfg = config
         self.db = database
+        self.helper = Helper(self.cfg)
         self.ids = self.cfg.RANGE
-        self.failed = []
-        self.protected = []
         self.progress = 0
         self.goal = len(self.ids)
         self.start_time = None
@@ -27,21 +26,21 @@ class Scraper:
             self.progress += 1
             self.current_url = self.get_url(site_id)
 
-            self.log_progress()
+            self.helper.log_progress(self)
 
             soup = self.download(site_id)
 
             if soup is None:
-                self.add_fail(site_id, reason="Failed to download data")
+                self.helper.add_fail(site_id, reason="Failed to download data")
                 continue
 
             site = Website(soup, index=site_id)
 
             if site.has_password():
-                self.add_protected(site.index)
+                self.helper.add_protected(site.index)
 
             if not site.is_valid():
-                self.add_fail(site.index, reason="Invalid website content")
+                self.helper.add_fail(site.index, reason="Invalid website content")
                 continue
 
             doc = site.to_doc()
@@ -65,8 +64,8 @@ class Scraper:
             try:
                 request, code = self.make_request()
             except:
-                self.log_progress()
-                self.log_fail(tries, self.cfg.MAX_TRIES)
+                self.helper.log_progress(self)
+                self.helper.log_fail(self, tries, self.cfg.MAX_TRIES)
 
                 time.sleep(self.cfg.TRY_DELAY)
 
@@ -74,48 +73,6 @@ class Scraper:
             soup = bs(request.content, "html.parser")
 
         return soup
-
-    def log_progress(self) -> None:
-        if not self.cfg.FRONT_END_ENABLED:
-            return
-
-        data = {
-            "progress": self.progress,
-            "goal": self.goal,
-            "start": self.start_time,
-            "url": self.current_url,
-            "failed": self.failed,
-            "protected": self.protected,
-            "pushes": self.db.pushes,
-            "duplicates": self.db.duplicates,
-        }
-
-        helper.log_progress(data)
-
-    def log_fail(self, tries, max_tries) -> None:
-        if not self.cfg.FRONT_END_ENABLED:
-            return
-
-        data = {
-            "url": self.current_url,
-            "tries": tries,
-            "max_tries": max_tries,
-            "delay": self.cfg.TRY_DELAY,
-        }
-
-        helper.log_fail(data)
-
-    def add_protected(self, site_id) -> None:
-        if not self.cfg.FRONT_END_ENABLED:
-            return
-
-        self.protected.append({"id": "site_id", "reason": "Password protected"})
-
-    def add_fail(self, site_id, reason="") -> None:
-        if not self.cfg.FRONT_END_ENABLED:
-            return
-
-        self.failed.append({"id": site_id, "reason": reason})
 
     def get_url(self, i) -> str:
         return f"http://{self.cfg.URL}{i}"
