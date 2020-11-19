@@ -4,7 +4,7 @@ class Config:
         # wklejto.pl/txt{ID} - Raw text. Password front-end still occurs
         self.URL = f"wklejto.pl/"
 
-        self.RANGE = range(120, 50_000)
+        self.RANGE = range(57_000, 57_050)
 
         self.DB_HOST = "localhost"
         self.DB_PORT = 27017

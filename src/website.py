@@ -6,7 +6,6 @@ from document import Document
 class Website:
     def __init__(self, soup, index):
         self.soup = None or soup
-
         self.index = None or index
         self.password = None
         self.valid = None
@@ -17,7 +16,7 @@ class Website:
 
     def to_doc(self) -> Document:
         if self.has_password():
-            doc = Document(protected=self.has_password(), site_id=self.index)
+            doc = Document(protected=self.has_password(), site_id=self.index,)
         else:
             doc = Document(
                 protected=self.has_password(),
@@ -66,7 +65,7 @@ class Website:
         return False
 
     def is_valid(self) -> bool:
-        if self.valid is not None:
+        if self.valid is None:
             self.valid = self.validate()
 
         return self.valid
@@ -81,7 +80,7 @@ class Website:
         if self.empty is None:
             self.empty = bool(self.soup.find("form", {"id": "formwyslij"}))
 
-        return not self.empty
+        return self.empty
 
     def has_password(self) -> bool:
         if self.password is None:
