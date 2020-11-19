@@ -16,6 +16,7 @@ def get_range() -> list:
 def main() -> None:
     cfg = Config()
     cfg.set_range(get_range())
+    print(f"range: {cfg.RANGE}")
 
     db = Database(cfg)
     db.start(confirm=True)
