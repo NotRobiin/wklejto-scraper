@@ -10,26 +10,33 @@ class Website:
         self.password = None
         self.valid = None
         self.content = None
+        self.author = None
+        self.date = None
+        self.empty = None
 
     def get_content(self) -> str:
-        txt = self.soup.find("pre", {"class": "de1"}).text.replace("\xa0", " ")
+        if self.content is None:
+            self.content = self.soup.find("pre", {"class": "de1"})
+            self.content = self.content.text.replace("\xa0", " ")
 
-        return txt
+        return self.content
 
     def get_author(self) -> str:
-        txt = self.soup.find("td", {"class": "tdm"}).text
-        pattern = r"(?<=Dodane przez: )(.*)(?= \()"
-        date = search(pattern, txt).group(0)
+        if self.author is None:
+            txt = self.soup.find("td", {"class": "tdm"}).text
+            pattern = r"(?<=Dodane przez: )(.*)(?= \()"
+            self.author = search(pattern, txt).group(0)
 
-        return date
+        return self.author
 
     def get_date(self) -> str:
-        txt = self.soup.find("td", {"class": "tdm"}).text
-        pattern = r"([0-9])+-([0-9])+-([0-9])+ ([0-9])+:([0-9])+"
-        match = search(pattern, txt).group(0)
-        date = dt.datetime.strptime(match, "%Y-%m-%d %H:%M")
+        if self.date is None:
+            txt = self.soup.find("td", {"class": "tdm"}).text
+            pattern = r"([0-9])+-([0-9])+-([0-9])+ ([0-9])+:([0-9])+"
+            match = search(pattern, txt).group(0)
+            self.date = dt.datetime.strptime(match, "%Y-%m-%d %H:%M")
 
-        return date
+        return self.date
 
     def is_valid(self) -> bool:
         if self.is_empty():
@@ -44,16 +51,19 @@ class Website:
         return False
 
     def has_content(self) -> bool:
-        content = self.soup.find("pre", {"class": "de1"})
+        if self.content is None:
+            self.content = bool(self.soup.find("pre", {"class": "de1"}))
 
-        return bool(content is not None)
+        return self.content
 
     def is_empty(self) -> bool:
-        el = self.soup.find("form", {"id": "formwyslij"})
+        if self.empty is None:
+            self.empty = bool(self.soup.find("form", {"id": "formwyslij"}))
 
-        return bool(el is not None)
+        return not self.empty
 
     def is_password_protected(self) -> bool:
-        p = self.soup.find("input", {"name": "haslo"})
+        if self.password is None:
+            self.password = bool(self.soup.find("input", {"name": "haslo"}))
 
-        return bool(p is not None)
+        return self.password
