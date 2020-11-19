@@ -4,6 +4,7 @@ import datetime as dt
 from bs4 import BeautifulSoup as bs
 import helper_functions as helper
 from document import Document
+from website import Website
 
 
 class Scraper:
@@ -33,25 +34,26 @@ class Scraper:
                 self.add_fail(site_id, reason="Failed to download data")
                 continue
 
-            password = helper.is_password_protected(soup)
-            valid = helper.is_valid_page(soup)
+            site = Website(soup, index=site_id)
+            site.password = site.is_password_protected()
+            site.valid = site.is_valid()
 
-            if password:
-                self.add_protected(site_id)
+            if site.password:
+                self.add_protected(site.index)
 
-            if not valid:
-                self.add_fail(site_id, reason="Invalid website content")
+            if not site.valid:
+                self.add_fail(site.index, reason="Invalid website content")
                 continue
 
-            if password:
-                doc = Document(protected=password, site_id=site_id)
+            if site.password:
+                doc = Document(protected=site.password, site_id=site.index)
             else:
                 doc = Document(
-                    protected=password,
-                    author=helper.get_author(soup),
-                    date=helper.get_date(soup),
-                    content=helper.get_content(soup),
-                    site_id=site_id,
+                    protected=site.password,
+                    author=site.get_author(),
+                    date=site.get_date(),
+                    content=site.get_content(),
+                    site_id=site.index,
                 )
 
             self.db.insert(doc)

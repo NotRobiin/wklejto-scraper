@@ -15,10 +15,7 @@ def get_range() -> list:
 
 def main() -> None:
     cfg = Config()
-    r = get_range()
-
-    if r[0] and r[1]:
-        cfg.RANGE = range(r[0], r[1])
+    cfg.set_range(get_range())
 
     db = Database(cfg)
     db.start(confirm=True)
