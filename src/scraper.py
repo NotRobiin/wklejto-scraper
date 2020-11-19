@@ -75,4 +75,9 @@ class Scraper:
         return soup
 
     def get_url(self, i) -> str:
-        return f"http://{self.cfg.URL}{i}"
+        url = self.cfg.URL
+
+        if not url.startswith("http://") and not url.startswith("https://"):
+            return f"http://{url}{i}"
+
+        return f"{self.cfg.URL}{i}"
