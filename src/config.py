@@ -24,8 +24,8 @@ class Config:
     def set_range(self, r) -> bool:
         if r[0] <= 0 or r[1] <= 0:
             return False
-        
+
         if r[0] < r[1]:
             return False
-        
+
         self.RANGE = range(r[0], r[1])

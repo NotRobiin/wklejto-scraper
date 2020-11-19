@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup as bs
 import helper_functions as helper
 from document import Document
 from website import Website
+from typing import Union
 
 
 class Scraper:
@@ -58,13 +59,13 @@ class Scraper:
 
             self.db.insert(doc)
 
-    def make_request(self):
+    def make_request(self) -> set:
         req = requests.get(self.current_url)
         code = req.status_code
 
         return (req, code)
 
-    def download(self, site_id):
+    def download(self, site_id) -> Union[None, bs]:
         tries = 0
         request = None
         code = 0

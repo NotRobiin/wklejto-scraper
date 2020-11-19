@@ -2,18 +2,18 @@ import datetime as dt
 from os import system
 
 
-def percentage(a, b):
-    return 100.0 * a / b
+def percentage(a, b) -> float:
+    return float(100.0 * a / b)
 
 
-def elapsed_time(from_time):
+def elapsed_time(from_time) -> str:
     sec_elapsed = (dt.datetime.now() - from_time).total_seconds()
     elapsed = str(dt.timedelta(seconds=sec_elapsed))[:-7]
 
     return elapsed
 
 
-def log_fail(data):
+def log_fail(data) -> None:
     url = data["url"]
     tries = data["tries"]
     max_tries = data["max_tries"]
@@ -24,7 +24,7 @@ def log_fail(data):
     )
 
 
-def log_progress(data):
+def log_progress(data) -> None:
     system("cls")
 
     p = data["progress"]
@@ -54,5 +54,5 @@ def log_progress(data):
     print("\n")
 
 
-def fix_spaces(e):
+def fix_spaces(e) -> str:
     return e.replace("\xa0", " ")
