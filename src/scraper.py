@@ -36,21 +36,19 @@ class Scraper:
                 continue
 
             site = Website(soup, index=site_id)
-            site.password = site.is_password_protected()
-            site.valid = site.is_valid()
 
-            if site.password:
+            if site.has_password():
                 self.add_protected(site.index)
 
-            if not site.valid:
+            if not site.is_valid():
                 self.add_fail(site.index, reason="Invalid website content")
                 continue
 
-            if site.password:
-                doc = Document(protected=site.password, site_id=site.index)
+            if site.has_password():
+                doc = Document(protected=site.has_password(), site_id=site.index)
             else:
                 doc = Document(
-                    protected=site.password,
+                    protected=site.has_password(),
                     author=site.get_author(),
                     date=site.get_date(),
                     content=site.get_content(),

@@ -38,17 +38,23 @@ class Website:
 
         return self.date
 
-    def is_valid(self) -> bool:
+    def validate(self) -> bool:
         if self.is_empty():
             return False
 
-        if self.is_password_protected():
+        if self.has_password():
             return True
 
         if self.has_content():
             return True
 
         return False
+
+    def is_valid(self) -> bool:
+        if self.valid is not None:
+            self.valid = self.validate()
+
+        return self.valid
 
     def has_content(self) -> bool:
         if self.content is None:
@@ -62,7 +68,7 @@ class Website:
 
         return not self.empty
 
-    def is_password_protected(self) -> bool:
+    def has_password(self) -> bool:
         if self.password is None:
             self.password = bool(self.soup.find("input", {"name": "haslo"}))
 
