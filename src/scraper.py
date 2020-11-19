@@ -44,17 +44,7 @@ class Scraper:
                 self.add_fail(site.index, reason="Invalid website content")
                 continue
 
-            if site.has_password():
-                doc = Document(protected=site.has_password(), site_id=site.index)
-            else:
-                doc = Document(
-                    protected=site.has_password(),
-                    author=site.get_author(),
-                    date=site.get_date(),
-                    content=site.get_content(),
-                    site_id=site.index,
-                )
-
+            doc = site.to_doc()
             self.db.insert(doc)
 
     def make_request(self) -> set:

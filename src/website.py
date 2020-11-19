@@ -1,5 +1,6 @@
 from re import search
 import datetime as dt
+from document import Document
 
 
 class Website:
@@ -13,6 +14,20 @@ class Website:
         self.author = None
         self.date = None
         self.empty = None
+
+    def to_doc(self) -> Document:
+        if self.has_password():
+            doc = Document(protected=self.has_password(), site_id=self.index)
+        else:
+            doc = Document(
+                protected=self.has_password(),
+                author=self.get_author(),
+                date=self.get_date(),
+                content=self.get_content(),
+                site_id=self.index,
+            )
+
+        return doc
 
     def get_content(self) -> str:
         if self.content is None:
