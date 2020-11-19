@@ -29,28 +29,26 @@ def log_progress(data) -> None:
 
     p = data["progress"]
     goal = data["goal"]
-    start = data["start"]
     url = data["url"]
-    failed = data["failed"]
-    prot = data["protected"]
+    failed = len(data["failed"])
+    prot = len(data["protected"])
     pushes = data["pushes"]
     dupl = data["duplicates"]
 
-    progress_perc = percentage(p, goal)
-    fail_perc = percentage(len(failed), goal)
-    prot_perc = percentage(len(prot), goal)
-    left = goal - p
-    started = dt.datetime.strftime(start, "%H:%M:%S")
-    elapsed = elapsed_time(start)
+    progress = percentage(p, goal)
+    fail_perc = percentage(failed, goal)
+    prot_perc = percentage(prot, goal)
+    started = dt.datetime.strftime(data["start"], "%H:%M:%S")
+    elapsed = elapsed_time(data["start"])
 
     print(f"Currently working on: '{url}'")
-    print(f"Progress: {p} / {goal} ({progress_perc:.2f}%) ({left} left)")
+    print(f"Progress: {p} / {goal} ({progress:.2f}%) ({goal - p} left)")
     print(f"Pushed: {pushes}")
     print(f"Duplicates: {dupl}")
     print(f"Started: {started}")
     print(f"Elapsed: {elapsed}")
-    print(f"Failed: {len(failed)} / {goal} ({fail_perc:.2f}%)")
-    print(f"Protected: {len(prot)} / {goal} ({prot_perc:.2f}%)")
+    print(f"Failed: {failed} / {goal} ({fail_perc:.2f}%)")
+    print(f"Protected: {prot} / {goal} ({prot_perc:.2f}%)")
     print("\n")
 
 
