@@ -53,10 +53,8 @@ class Scraper:
         return (req, code)
 
     def download(self, site_id) -> Union[None, bs]:
-        tries = 0
-        request = None
-        code = 0
-        soup = None
+        tries, code = 0, 0
+        request, soup = None, None
 
         while code != 200 and tries < self.cfg.MAX_TRIES:
             tries += 1
