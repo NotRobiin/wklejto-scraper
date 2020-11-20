@@ -15,7 +15,7 @@ class Scraper:
         self.site_id = site_id
         self.current_url = self.get_url(self.site_id)
 
-    def scrape(self) -> bool:
+    def scrape(self) -> int:
         self.logger.progress += 1
         self.logger.log_progress(self)
 
@@ -23,7 +23,7 @@ class Scraper:
 
         if soup is None:
             self.helper.add_fail(self.site_id, reason="Failed to download data")
-            return False
+            return 0
 
         site = Website(soup, index=self.site_id)
 
@@ -32,12 +32,12 @@ class Scraper:
 
         if not site.is_valid():
             self.helper.add_fail(site.index, reason="Invalid website content")
-            return False
+            return 0
 
         doc = site.to_doc()
         self.db.insert(doc)
 
-        return True
+        return 1
 
     def make_request(self) -> set:
         req = requests.get(self.current_url)
