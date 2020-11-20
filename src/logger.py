@@ -33,6 +33,7 @@ class Logger:
 
         message = f"""
         Currently working on: '{scraper.current_url}'
+        Working with: {self.cfg.THREAD_AMOUNT} threads
         Progress: {self.progress} / {self.goal} ({progress_perc:.2f}%) ({self.goal - self.progress} left)
         Pushed: {self.db.pushes}
         Duplicates: {self.db.duplicates}

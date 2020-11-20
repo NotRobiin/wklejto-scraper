@@ -12,7 +12,7 @@ class Scraper:
         self.db = database
         self.helper = helper
         self.logger = logger
-        self.site_id = site_id
+        self.site_id = int(site_id)
         self.current_url = self.get_url(self.site_id)
 
     def __del__(self):

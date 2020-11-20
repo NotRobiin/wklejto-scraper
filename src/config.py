@@ -6,6 +6,8 @@ class Config:
 
         self.RANGE = range(1, 10_000)
 
+        self.THREAD_AMOUNT = 30
+
         self.DB_HOST = "localhost"
         self.DB_PORT = 27017
         self.DB_NAME = "wklejto"
