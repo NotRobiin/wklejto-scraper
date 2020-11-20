@@ -1,50 +1,43 @@
 import requests
 import time
-import datetime as dt
 from bs4 import BeautifulSoup as bs
 from document import Document
 from website import Website
 from typing import Union
-from helper import Helper
 
 
 class Scraper:
-    def __init__(self, config, database):
+    def __init__(self, site_id, config, helper, database, logger):
         self.cfg = config
         self.db = database
-        self.helper = Helper(self.cfg)
-        self.ids = self.cfg.RANGE
-        self.progress = 0
-        self.goal = len(self.ids)
-        self.start_time = None
-        self.current_url = ""
+        self.helper = helper
+        self.logger = logger
+        self.site_id = site_id
+        self.current_url = self.get_url(self.site_id)
 
-    def start(self) -> None:
-        self.start_time = dt.datetime.now()
+    def scrape(self) -> bool:
+        self.logger.progress += 1
+        self.logger.log_progress(self)
 
-        for site_id in self.ids:
-            self.progress += 1
-            self.current_url = self.get_url(site_id)
+        soup = self.download(self.site_id)
 
-            self.helper.log_progress(self)
+        if soup is None:
+            self.helper.add_fail(self.site_id, reason="Failed to download data")
+            return False
 
-            soup = self.download(site_id)
+        site = Website(soup, index=self.site_id)
 
-            if soup is None:
-                self.helper.add_fail(site_id, reason="Failed to download data")
-                continue
+        if site.has_password():
+            self.helper.add_protected(site.index)
 
-            site = Website(soup, index=site_id)
+        if not site.is_valid():
+            self.helper.add_fail(site.index, reason="Invalid website content")
+            return False
 
-            if site.has_password():
-                self.helper.add_protected(site.index)
+        doc = site.to_doc()
+        self.db.insert(doc)
 
-            if not site.is_valid():
-                self.helper.add_fail(site.index, reason="Invalid website content")
-                continue
-
-            doc = site.to_doc()
-            self.db.insert(doc)
+        return True
 
     def make_request(self) -> set:
         req = requests.get(self.current_url)

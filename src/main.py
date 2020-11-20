@@ -1,6 +1,8 @@
 from scraper import Scraper
 from config import Config
 from mongo import Database
+from logger import Logger
+from helper import Helper
 import sys
 
 
@@ -20,8 +22,11 @@ def main() -> None:
     db = Database(cfg)
     db.start(confirm=True)
 
-    sc = Scraper(config=cfg, database=db)
-    sc.start()
+    helper = Helper(cfg)
+    logger = Logger(config=cfg, database=db, helper=helper)
+
+    sc = Scraper(site_id=150_000, config=cfg, database=db, helper=helper, logger=logger)
+    sc.scrape()
 
 
 if __name__ == "__main__":
