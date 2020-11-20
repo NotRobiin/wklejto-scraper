@@ -12,7 +12,9 @@ def get_range() -> list:
     if len(args) != 2:
         return [0, 0]
 
-    return [int(x) for x in args[-1].split("-")]
+    vals = [int(x) for x in args[-1].split("-")]
+
+    return [vals[0], vals[1] + 1]
 
 
 def main() -> None:
@@ -25,8 +27,9 @@ def main() -> None:
     helper = Helper(cfg)
     logger = Logger(config=cfg, database=db, helper=helper)
 
-    sc = Scraper(site_id=150_000, config=cfg, database=db, helper=helper, logger=logger)
-    sc.scrape()
+    for i in cfg.RANGE:
+        sc = Scraper(site_id=i, config=cfg, database=db, helper=helper, logger=logger)
+        sc.scrape()
 
 
 if __name__ == "__main__":
