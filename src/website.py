@@ -30,8 +30,9 @@ class Website:
 
     def get_content(self) -> str:
         if self.content is None:
-            self.content = self.soup.find("pre", {"class": "de1"})
-            self.content = self.content.text.replace("\xa0", " ")
+            self.content = self.soup.find("pre", {"class": "de1"}).text.replace(
+                "\xa0", " "
+            )
 
         return self.content
 
@@ -72,7 +73,7 @@ class Website:
 
     def has_content(self) -> bool:
         if self.content is None:
-            self.content = bool(self.soup.find("pre", {"class": "de1"}))
+            return bool(self.soup.find("pre", {"class": "de1"}))
 
         return self.content
 

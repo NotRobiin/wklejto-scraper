@@ -15,7 +15,7 @@ def manage_args(cfg):
 
     args = parser.parse_args()
     cfg.RANGE = range(args.range[0], args.range[1])
-    cfg.THREAD_AMOUNT = args.threads
+    cfg.THREAD_AMOUNT = args.threads[0]
 
 
 def make_threads(cfg: Config, db: Database, helper: Helper, logger: Logger) -> list:
@@ -33,7 +33,7 @@ def make_threads(cfg: Config, db: Database, helper: Helper, logger: Logger) -> l
 
 def start_threads(threads: list) -> None:
     for t in threads:
-        t.run()
+        t.start()
 
 
 def main() -> None:

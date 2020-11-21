@@ -1,6 +1,7 @@
 from os import system
 import helper_functions as hf
 import datetime as dt
+from threading import Semaphore, active_count
 
 
 class Logger:
@@ -11,6 +12,7 @@ class Logger:
         self.progress = 0
         self.goal = len(self.cfg.RANGE)
         self.start_time = dt.datetime.now()
+        self.screen_lock = Semaphore(value=1)
 
     def log_fail(self, scraper, tries, max_tries) -> None:
         url = scraper.current_url
@@ -21,6 +23,8 @@ class Logger:
         )
 
     def log_progress(self, scraper) -> None:
+        self.screen_lock.acquire()
+
         hf.clear()
 
         started = dt.datetime.strftime(self.start_time, "%H:%M:%S")
@@ -33,7 +37,7 @@ class Logger:
 
         message = f"""
         Currently working on: '{scraper.current_url}'
-        Working with: {self.cfg.THREAD_AMOUNT} threads
+        Working with: {threading.active_count()} threads (Config: {self.cfg.THREAD_AMOUNT})
         Progress: {self.progress} / {self.goal} ({progress_perc:.2f}%) ({self.goal - self.progress} left)
         Pushed: {self.db.pushes}
         Duplicates: {self.db.duplicates}
@@ -44,3 +48,4 @@ class Logger:
         """
 
         print(f"{message}\n")
+        self.screen_lock.release()

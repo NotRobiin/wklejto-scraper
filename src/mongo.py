@@ -29,7 +29,7 @@ class Database:
     def insert(self, doc: Document) -> int:
         if self.col.find_one({"site_id": doc.site_id}):
             self.duplicates += 1
-            
+
             return -1
 
         data = doc.get()
