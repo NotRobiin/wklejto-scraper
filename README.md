@@ -3,9 +3,8 @@ Web scraper that scrapes [wklejto.pl](https://wklejto.pl/), paste site
 
 ## Running the program
 - cd into /src/ directory
-- python main.py [range] ("range" argument is optional. Pass two values separated by "-", ex. 10-100)
+- python main.py range_start range_end thread_amount
 
 ## Requirements
 - Python 3.x or higher
 - MongoDB
-- Windows
