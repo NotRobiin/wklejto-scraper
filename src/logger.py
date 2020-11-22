@@ -1,7 +1,7 @@
 from os import system
 import helper_functions as hf
 import datetime as dt
-from threading import Semaphore, active_count
+from threading import Semaphore
 
 
 class Logger:
@@ -37,7 +37,7 @@ class Logger:
 
         message = f"""
         Currently working on: '{scraper.current_url}'
-        Working with: {threading.active_count()} threads (Config: {self.cfg.THREAD_AMOUNT})
+        Working with: {self.cfg.THREAD_AMOUNT} threads
         Progress: {self.progress} / {self.goal} ({progress_perc:.2f}%) ({self.goal - self.progress} left)
         Pushed: {self.db.pushes}
         Duplicates: {self.db.duplicates}
