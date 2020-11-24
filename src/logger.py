@@ -51,7 +51,7 @@ class Logger:
         Elapsed: {elapsed}
         Failed: {failed} / {self.goal} ({failed_perc:.2f}%)
         Protected: {protected} / {self.goal} ({protected_perc:.2f}%)
-        """
+        \n"""
 
-        print(f"{message}\n")
+        print(message)
         self.screen_lock.release()
