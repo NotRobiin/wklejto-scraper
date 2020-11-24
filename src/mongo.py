@@ -9,7 +9,8 @@ class Database:
         self.duplicates = 0
 
     def __del__(self):
-        print(f"Closing database connection. Inserted documents: {self.pushes}")
+        if self.cfg.FRONT_END_ENABLED:
+            print(f"Closing database connection. Inserted documents: {self.pushes}")
 
     def start(self, confirm):
         self.host = self.cfg.DB_HOST
@@ -23,7 +24,11 @@ class Database:
 
         confirm = False or confirm
 
-        if confirm and self.db_name in self.client.list_database_names():
+        if (
+            confirm
+            and self.cfg.FRONT_END_ENABLED
+            and self.db_name in self.client.list_database_names()
+        ):
             print(f'Database "{self.db_name}" already exists.')
 
     def insert(self, doc: Document) -> int:

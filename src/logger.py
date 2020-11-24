@@ -15,6 +15,9 @@ class Logger:
         self.screen_lock = Semaphore(value=1)
 
     def log_fail(self, scraper, tries, max_tries) -> None:
+        if not self.cfg.FRONT_END_ENABLED:
+            return
+
         url = scraper.current_url
         delay = self.cfg.TRY_DELAY
 
@@ -23,6 +26,9 @@ class Logger:
         )
 
     def log_progress(self, scraper) -> None:
+        if not self.cfg.FRONT_END_ENABLED:
+            return
+
         self.screen_lock.acquire()
 
         hf.clear()
