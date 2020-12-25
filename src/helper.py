@@ -2,7 +2,7 @@ import helper_functions as hf
 
 
 class Helper:
-    def __init__(self, config):
+    def __init__(self, config) -> None:
         self.cfg = config
         self.failed = []
         self.protected = []

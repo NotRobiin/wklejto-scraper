@@ -1,5 +1,5 @@
 class Config:
-    def __init__(self):
+    def __init__(self) -> None:
         self.URL = f"wklejto.pl/"
 
         self.RANGE = None

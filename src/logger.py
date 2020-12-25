@@ -5,7 +5,7 @@ from threading import Semaphore
 
 
 class Logger:
-    def __init__(self, config, database, helper):
+    def __init__(self, config, database, helper) -> None:
         self.cfg = config
         self.helper = helper
         self.db = database
@@ -14,7 +14,7 @@ class Logger:
         self.start_time = dt.datetime.now()
         self.screen_lock = Semaphore(value=1)
 
-    def log_fail(self, scraper, tries) -> None:
+    def log_fail(self, scraper, tries: int) -> None:
         if self.cfg.FRONT_END_TYPE in ["min", "disabled"]:
             return
 
