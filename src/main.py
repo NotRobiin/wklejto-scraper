@@ -12,12 +12,20 @@ def manage_args() -> dict:
     parser = argparse.ArgumentParser()
     parser.add_argument("range", nargs=2, type=int)
     parser.add_argument("threads", nargs=1, type=int)
+    parser.add_argument(
+        "-front",
+        nargs=1,
+        type=str,
+        default="enabled",
+        choices=["enabled", "disabled", "min"],
+    )
 
     args = parser.parse_args()
 
     return {
         "range": range(args.range[0], args.range[1]),
         "threads": args.threads[0],
+        "front": args.front,
     }
 
 
@@ -47,6 +55,7 @@ def main() -> None:
     cfg = Config()
     cfg.THREAD_AMOUNT = args["threads"]
     cfg.RANGE = args["range"]
+    cfg.FRONT_END_TYPE = args["front"][0]
 
     # Start database
     db = Database(cfg)

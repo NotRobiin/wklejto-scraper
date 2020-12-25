@@ -11,8 +11,9 @@ class Config:
         self.DB_NAME = "wklejto"
         self.DB_COL = "pastes"
 
-        # Toggles prints and logs
-        self.FRONT_END_ENABLED = True
+        # Front-end switch.
+        # Options: "enabled", "disabled", "min"
+        self.FRONT_END_TYPE = "min"
 
         self.MAX_TRIES = 5
         self.TRY_DELAY = 0.2
