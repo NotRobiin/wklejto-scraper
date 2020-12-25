@@ -14,15 +14,16 @@ class Logger:
         self.start_time = dt.datetime.now()
         self.screen_lock = Semaphore(value=1)
 
-    def log_fail(self, scraper, tries, max_tries) -> None:
+    def log_fail(self, scraper, tries) -> None:
         if not self.cfg.FRONT_END_ENABLED:
             return
 
         url = scraper.current_url
         delay = self.cfg.TRY_DELAY
+        mx = self.cfg.MAX_TRIES
 
         print(
-            f"Failed to resolve website '{url}' ({tries} / {max_tries}). Waiting {delay} second(s)..."
+            f"Failed to resolve website '{url}' ({tries} / {mx}). Waiting {delay} second(s)..."
         )
 
     def log_progress(self, scraper) -> None:
@@ -49,8 +50,8 @@ class Logger:
         Duplicates: {self.db.duplicates}
         Started: {started}
         Elapsed: {elapsed}
-        Failed: {failed} / {self.goal} ({failed_perc:.2f}%)
-        Protected: {protected} / {self.goal} ({protected_perc:.2f}%)
+        Failed: {failed} ({failed_perc:.2f}%)
+        Protected: {protected} ({protected_perc:.2f}%)
         \n"""
 
         print(message)

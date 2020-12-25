@@ -1,7 +1,5 @@
 class Config:
     def __init__(self):
-        # wklejto.pl/{ID} - Front-end finished paste
-        # wklejto.pl/txt{ID} - Raw text. Password front-end still occurs
         self.URL = f"wklejto.pl/"
 
         self.RANGE = None
@@ -17,4 +15,4 @@ class Config:
         self.FRONT_END_ENABLED = True
 
         self.MAX_TRIES = 5
-        self.TRY_DELAY = 0.6
+        self.TRY_DELAY = 0.2

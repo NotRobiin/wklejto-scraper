@@ -8,14 +8,17 @@ import numpy as np
 import argparse
 
 
-def manage_args(cfg):
+def manage_args() -> dict:
     parser = argparse.ArgumentParser()
     parser.add_argument("range", nargs=2, type=int)
     parser.add_argument("threads", nargs=1, type=int)
 
     args = parser.parse_args()
-    cfg.RANGE = range(args.range[0], args.range[1])
-    cfg.THREAD_AMOUNT = args.threads[0]
+
+    return {
+        "range": range(args.range[0], args.range[1]),
+        "threads": args.threads[0],
+    }
 
 
 def make_threads(cfg: Config, db: Database, helper: Helper, logger: Logger) -> list:
@@ -37,13 +40,19 @@ def start_threads(threads: list) -> None:
 
 
 def main() -> None:
+    # Get start-up args
+    args = manage_args()
+
+    # Update config based on args
     cfg = Config()
+    cfg.THREAD_AMOUNT = args["threads"]
+    cfg.RANGE = args["range"]
 
-    manage_args(cfg)
-
+    # Start database
     db = Database(cfg)
     db.start(confirm=True)
 
+    # Start helper-functions class, logger and threads
     helper = Helper(cfg)
     logger = Logger(config=cfg, database=db, helper=helper)
     threads = make_threads(cfg, db, helper, logger)

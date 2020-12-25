@@ -40,7 +40,7 @@ class Scraper:
 
         return True
 
-    def make_request(self) -> set:
+    def make_request(self) -> tuple:
         req = requests.get(self.current_url)
         code = req.status_code
 
@@ -57,7 +57,7 @@ class Scraper:
                 request, code = self.make_request()
             except:
                 self.helper.log_progress(self)
-                self.helper.log_fail(self, tries, self.cfg.MAX_TRIES)
+                self.helper.log_fail(self, tries)
 
                 time.sleep(self.cfg.TRY_DELAY)
 
@@ -69,7 +69,7 @@ class Scraper:
     def get_url(self, i) -> str:
         url = self.cfg.URL
 
-        if not url.startswith("http://") and not url.startswith("https://"):
+        if not url.startswith("http://") or url.startswith("https://"):
             return f"http://{url}{i}"
 
-        return f"{self.cfg.URL}{i}"
+        return f"{url}{i}"
