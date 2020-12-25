@@ -7,20 +7,20 @@ from typing import Union
 
 
 class Scraper:
-    def __init__(self, site_id, config, helper, database, logger):
+    def __init__(self, site_id: int, config, helper, database, logger) -> None:
         self.cfg = config
         self.db = database
         self.helper = helper
         self.logger = logger
-        self.site_id = int(site_id)
+        self.site_id = site_id
         self.current_url = self.get_url(self.site_id)
 
-    def __del__(self):
+    def __del__(self) -> None:
         self.logger.progress += 1
         self.logger.log_progress(self)
 
     def scrape(self) -> bool:
-        soup = self.download(self.site_id)
+        soup = self.download()
 
         if soup is None:
             self.helper.add_fail(self.site_id, reason="Failed to download data")
@@ -46,7 +46,7 @@ class Scraper:
 
         return (req, code)
 
-    def download(self, site_id) -> Union[None, bs]:
+    def download(self) -> Union[None, bs]:
         tries, code = 0, 0
         request, soup = None, None
 
@@ -66,7 +66,7 @@ class Scraper:
 
         return soup
 
-    def get_url(self, i) -> str:
+    def get_url(self, i: int) -> str:
         url = self.cfg.URL
 
         if not url.startswith("http://") or url.startswith("https://"):

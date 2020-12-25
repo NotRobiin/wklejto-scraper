@@ -3,17 +3,17 @@ from document import Document
 
 
 class Database:
-    def __init__(self, config):
+    def __init__(self, config) -> None:
         self.cfg = config
         self.pushes = 0
         self.duplicates = 0
 
-    def __del__(self):
+    def __del__(self) -> None:
         if self.cfg.FRONT_END_TYPE != "disabled":
             print("Closing database connection.")
             print(f"Inserted documents: {self.pushes}.")
 
-    def start(self, confirm):
+    def start(self, confirm: bool = False) -> None:
         self.host = self.cfg.DB_HOST
         self.port = self.cfg.DB_PORT
         self.db_name = self.cfg.DB_NAME
@@ -22,8 +22,6 @@ class Database:
         self.client = pymongo.MongoClient(self.host, self.port)
         self.db = self.client[self.db_name]
         self.col = self.db[self.col_name]
-
-        confirm = False or confirm
 
         if (
             confirm

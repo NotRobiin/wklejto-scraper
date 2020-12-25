@@ -4,9 +4,9 @@ from document import Document
 
 
 class Website:
-    def __init__(self, soup, index):
-        self.soup = None or soup
-        self.index = None or index
+    def __init__(self, soup, index: int) -> None:
+        self.soup = soup
+        self.index = index
         self.password = None
         self.valid = None
         self.content = None

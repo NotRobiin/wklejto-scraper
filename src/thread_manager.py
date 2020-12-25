@@ -3,7 +3,7 @@ from scraper import Scraper
 
 
 class NewThread(threading.Thread):
-    def __init__(self, ids, config, database, helper, logger):
+    def __init__(self, ids, config, database, helper, logger) -> None:
         threading.Thread.__init__(self)
         self.ids = ids
         self.cfg = config
@@ -11,7 +11,7 @@ class NewThread(threading.Thread):
         self.helper = helper
         self.logger = logger
 
-    def run(self):
+    def run(self) -> None:
         for site in self.ids:
             sc = Scraper(
                 site_id=site,

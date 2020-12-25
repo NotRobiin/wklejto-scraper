@@ -8,7 +8,7 @@ import numpy as np
 import argparse
 
 
-def manage_args() -> dict:
+def manage_args() -> dict[str]:
     parser = argparse.ArgumentParser()
     parser.add_argument("range", nargs=2, type=int)
     parser.add_argument("threads", nargs=1, type=int)
@@ -29,7 +29,10 @@ def manage_args() -> dict:
     }
 
 
-def make_threads(cfg: Config, db: Database, helper: Helper, logger: Logger) -> list:
+def make_threads(
+    cfg: Config, db: Database, helper: Helper, logger: Logger
+) -> list[NewThread]:
+
     amount = cfg.THREAD_AMOUNT
     ids = [list(x) for x in np.array_split(list(cfg.RANGE), amount)]
 
@@ -42,7 +45,7 @@ def make_threads(cfg: Config, db: Database, helper: Helper, logger: Logger) -> l
     return threads
 
 
-def start_threads(threads: list) -> None:
+def start_threads(threads: list[NewThread]) -> None:
     for t in threads:
         t.start()
 
