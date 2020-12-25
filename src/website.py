@@ -15,6 +15,8 @@ class Website:
         self.empty = None
 
     def to_doc(self) -> Document:
+        self.index = int(self.index)
+
         if self.has_password():
             doc = Document(protected=self.has_password(), site_id=self.index,)
         else:
