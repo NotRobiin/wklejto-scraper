@@ -46,10 +46,9 @@ class Logger:
         failed = len(self.helper.failed)
         protected = len(self.helper.protected)
 
-        msg = f"{'Start':<14}{'Elapsed':<14}{'Pushed':<14}{'Failed':<14}{'Protected':<14}{'Progress'}\n"
-        msg += f"{started:<14}{elapsed:<14}{self.db.pushes:<14}{failed:<14}{protected:<14}{progress_perc}%"
-        msg = msg.strip()
-        msg += "\n\n"
+        msg = f"{'Start':<18}{'Elapsed':<18}{'Pushed':<18}{'Failed':<18}{'Protected':<18}{'Progress'}\n"
+        msg += f"{started:<18}{elapsed:<18}{self.db.pushes:<18}{failed:<18}{protected:<18}{progress_perc}%"
+        msg = msg.strip() + "\n\n"
 
         return msg
 
